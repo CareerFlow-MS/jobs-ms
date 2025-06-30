@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.careerflow.jobms.job.dto.JobWithCompanyDTO;
+
 
 @RestController
 @RequestMapping("/jobs")
@@ -24,9 +26,8 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Job>> findAll(){
-        List<Job> jobs = jobService.findAll();
-        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    public ResponseEntity<List<JobWithCompanyDTO>> findAll(){
+        return ResponseEntity.ok(jobService.findAll());
     }
 
     @PostMapping
