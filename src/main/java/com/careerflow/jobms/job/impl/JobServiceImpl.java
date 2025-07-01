@@ -13,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import com.careerflow.jobms.job.Job;
 import com.careerflow.jobms.job.JobRepository;
 import com.careerflow.jobms.job.JobService;
+import com.careerflow.jobms.job.clients.CompanyClient;
+import com.careerflow.jobms.job.clients.ReviewClient;
 import com.careerflow.jobms.job.dto.JobDTO;
 import com.careerflow.jobms.job.external.Company;
 import com.careerflow.jobms.job.external.Review;
@@ -30,9 +32,14 @@ public class JobServiceImpl implements JobService{
     @Autowired
     RestTemplate restTemplate;
 
+    private CompanyClient companyClient;
+    private ReviewClient reviewClient;
 
-    public JobServiceImpl(JobRepository jobRepository) {
+
+    public JobServiceImpl(JobRepository jobRepository, CompanyClient companyClient, ReviewClient reviewClient) {
         this.jobRepository = jobRepository;
+        this.companyClient = companyClient;
+        this.reviewClient = reviewClient;
     }
 
     
@@ -50,29 +57,14 @@ public class JobServiceImpl implements JobService{
 
     private JobDTO convertDto(Job job){
             // Fetch company details from the external service
-            Company company = restTemplate.getForObject("http://COMPANYMS:8081/companies/" + job.getCompanyId(), Company.class);
-
-            ResponseEntity<List<Review>> reviewResponse = restTemplate.exchange(
-                "http://REVIEWMS:8083/reviews?companyId=" + job.getCompanyId(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Review>>() {}
-            );
-
-            List<Review> reviews = reviewResponse.getBody();
-
-
+            Company company = companyClient.getCompanyById(job.getCompanyId());
+            List<Review> reviews = reviewClient.getReviews(job.getCompanyId());
 
             JobDTO jobDTO = JobMapper.mapToJobWithCompanyDTO(job, company, reviews);
-            // if (company != null) {
-            //     jobDTO.setCompany(company);
-            // } else {
-            //     System.out.println("Company not found for job id: " + job.getId());
-            // }
             return jobDTO;
-
     }
 
+    
     @Override
     public void createJob(Job job) {
         jobRepository.save(job);
