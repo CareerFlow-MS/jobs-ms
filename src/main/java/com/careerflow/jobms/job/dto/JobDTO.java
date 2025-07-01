@@ -1,8 +1,11 @@
 package com.careerflow.jobms.job.dto;
 
-import com.careerflow.jobms.job.external.Company;
+import java.util.List;
 
-public class JobWithCompanyDTO {
+import com.careerflow.jobms.job.external.Company;
+import com.careerflow.jobms.job.external.Review;
+
+public class JobDTO {
     private Long id;
     private String title;
     private String description;
@@ -10,6 +13,7 @@ public class JobWithCompanyDTO {
     private String maxSalary;
     private String location;
     private Company company;
+    private List<Review> reviews;
 
 
     public Long getId() {
@@ -55,5 +59,11 @@ public class JobWithCompanyDTO {
         this.company = company;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
     
 }
