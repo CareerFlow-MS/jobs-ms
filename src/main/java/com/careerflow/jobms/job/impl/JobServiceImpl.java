@@ -13,6 +13,7 @@ import com.careerflow.jobms.job.JobRepository;
 import com.careerflow.jobms.job.JobService;
 import com.careerflow.jobms.job.dto.JobWithCompanyDTO;
 import com.careerflow.jobms.job.external.Company;
+import com.careerflow.jobms.job.mapper.JobMapper;
 
 
 
@@ -43,12 +44,9 @@ public class JobServiceImpl implements JobService{
     }
 
     private JobWithCompanyDTO convertDto(Job job){
-            JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
-            jobWithCompanyDTO.setJob(job);
-            
             // Fetch company details from the external service
-            //RestTemplate restTemplate = new RestTemplate();
             Company company = restTemplate.getForObject("http://COMPANYMS:8081/companies/" + job.getCompanyId(), Company.class);
+            JobWithCompanyDTO jobWithCompanyDTO = JobMapper.mapToJobWithCompanyDTO(job, company);
             if (company != null) {
                 jobWithCompanyDTO.setCompany(company);
             } else {
