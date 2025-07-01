@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,6 +20,9 @@ import com.careerflow.jobms.job.external.Company;
 public class JobServiceImpl implements JobService{
 
     JobRepository jobRepository;
+
+    @Autowired
+    RestTemplate restTemplate;
 
 
     public JobServiceImpl(JobRepository jobRepository) {
@@ -43,8 +47,8 @@ public class JobServiceImpl implements JobService{
             jobWithCompanyDTO.setJob(job);
             
             // Fetch company details from the external service
-            RestTemplate restTemplate = new RestTemplate();
-            Company company = restTemplate.getForObject("http://localhost:8081/companies/" + job.getCompanyId(), Company.class);
+            //RestTemplate restTemplate = new RestTemplate();
+            Company company = restTemplate.getForObject("http://COMPANYMS:8081/companies/" + job.getCompanyId(), Company.class);
             if (company != null) {
                 jobWithCompanyDTO.setCompany(company);
             } else {
