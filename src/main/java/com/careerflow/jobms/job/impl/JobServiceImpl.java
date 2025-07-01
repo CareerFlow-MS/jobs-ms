@@ -64,18 +64,19 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public Job getJobById(Long id) {
-       return jobRepository.findById(id).orElse(null);
+    public JobWithCompanyDTO getJobById(Long id) {
+       Job job =  jobRepository.findById(id).orElse(null);
+       return convertDto(job);
 
     }
 
     @Override
-    public void deleteJob(Long id) {
-        try{
+    public boolean deleteJob(Long id) {
+        if (jobRepository.existsById(id)) {
             jobRepository.deleteById(id);
-        } catch (Exception e) {
-            System.out.println("Error deleting job with id: " + id);
+            return true;
         }
+        return false;
     }
 
     @Override
