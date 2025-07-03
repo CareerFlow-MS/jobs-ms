@@ -20,6 +20,8 @@ import com.careerflow.jobms.job.external.Company;
 import com.careerflow.jobms.job.external.Review;
 import com.careerflow.jobms.job.mapper.JobMapper;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 import org.springframework.http.HttpMethod;
 
 
@@ -45,6 +47,7 @@ public class JobServiceImpl implements JobService{
     
 
     @Override
+    @CircuitBreaker(name = "companyBreaker", fallbackMethod = "companyBreakerFallback")
     public List<JobDTO> findAll() {
 
         List<Job> jobs = jobRepository.findAll();
@@ -53,6 +56,13 @@ public class JobServiceImpl implements JobService{
         return jobs.stream()
                 .map(this::convertDto).collect(Collectors.toList());
 
+    }
+
+    // Fallback method for the circuit breaker
+    private List<String> companyBreakerFallback(Exception e) {
+        List<String> list = new ArrayList<>();
+        list.add("dummy");
+        return list;
     }
 
     private JobDTO convertDto(Job job){

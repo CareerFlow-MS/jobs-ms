@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.careerflow.jobms.job.external.Company;
 
-@FeignClient(name = "COMPANYMS")
+@FeignClient(name = "companyms")
 public interface CompanyClient {
 
     @GetMapping("/companies/{id}")
