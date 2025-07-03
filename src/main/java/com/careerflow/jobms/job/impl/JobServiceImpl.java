@@ -64,11 +64,11 @@ public class JobServiceImpl implements JobService{
     }
 
     // Fallback method for the circuit breaker
-    private List<String> companyBreakerFallback(Exception e) {
-        List<String> list = new ArrayList<>();
-        list.add("dummy");
-        return list;
-    }
+    // private List<String> companyBreakerFallback(Exception e) {
+    //     List<String> list = new ArrayList<>();
+    //     list.add("dummy");
+    //     return list;
+    // }
 
     private JobDTO convertDto(Job job){
             // Fetch company details from the external service
