@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.careerflow.jobms.job.external.Review;
 
 
-@FeignClient(name = "REVIEWMS")
+@FeignClient(name = "reviewms")
 public interface ReviewClient {
     
     @GetMapping("/reviews")
