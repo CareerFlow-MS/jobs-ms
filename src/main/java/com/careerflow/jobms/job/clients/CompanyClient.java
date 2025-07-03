@@ -9,6 +9,6 @@ import com.careerflow.jobms.job.external.Company;
 @FeignClient(name = "companyms")
 public interface CompanyClient {
 
-    @GetMapping("/companies/{id}")
-    Company getCompanyById(@PathVariable("id") Long id);
+    @GetMapping("/companies/{companyId}")
+    Company getCompanyById(@PathVariable("companyId") Long id);
 }
